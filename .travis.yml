@@ -20,23 +20,27 @@ install:
 script:
   - pytest --cov=webssh
   - flake8
-  - docker build -t webssh:build .
   
 after_success:
   - codecov
-  
-deploy:
-  - provider: script
-    script: |
-      docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-      docker tag webssh:build docker.io/jammyhewitt/webssh:latest
-      docker push docker.io/jammyhewitt/webssh:latest
-    on:
-      branch: master
-  - provider: script
-    script: |
-      docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-      docker tag webssh:$TRAVIS_TAG docker.io/jammyhewitt/webssh:$TRAVIS_TAG
-      docker push docker.io/jammyhewitt/webssh:$TRAVIS_TAG
-    on:
-      tags: true
+
+jobs:
+  include:
+    - stage: deploy
+        script:
+          - docker build -t webssh:build .
+        deploy:
+          - provider: script
+            script: |
+              docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+              docker tag webssh:build docker.io/jammyhewitt/webssh:latest
+              docker push docker.io/jammyhewitt/webssh:latest
+            on:
+              branch: master
+          - provider: script
+            script: |
+              docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+              docker tag webssh:$TRAVIS_TAG docker.io/jammyhewitt/webssh:$TRAVIS_TAG
+              docker push docker.io/jammyhewitt/webssh:$TRAVIS_TAG
+            on:
+              tags: true
