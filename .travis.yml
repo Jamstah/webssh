@@ -30,16 +30,16 @@ jobs:
       script: docker build -t webssh:build .
       deploy:
         - provider: script
-          script:
-            - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-            - docker tag webssh:build docker.io/jammyhewitt/webssh:latest
-            - docker push docker.io/jammyhewitt/webssh:latest
+          script: |
+            docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+            docker tag webssh:build docker.io/jammyhewitt/webssh:latest;
+            docker push docker.io/jammyhewitt/webssh:latest;
           on:
             branch: master
         - provider: script
-          script:
-            - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-            - docker tag webssh:$TRAVIS_TAG docker.io/jammyhewitt/webssh:$TRAVIS_TAG
-            - docker push docker.io/jammyhewitt/webssh:$TRAVIS_TAG
+          script: |
+            docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+            docker tag webssh:$TRAVIS_TAG docker.io/jammyhewitt/webssh:$TRAVIS_TAG;
+            docker push docker.io/jammyhewitt/webssh:$TRAVIS_TAG;
           on:
             tags: true
