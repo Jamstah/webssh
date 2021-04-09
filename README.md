@@ -10,6 +10,8 @@
 
 A simple web application to be used as an ssh client to connect to your ssh servers. It is written in Python, base on tornado, paramiko and xterm.js.
 
+What does travis do with a pr?
+
 ### Features
 
 * SSH password authentication supported, including empty password.
